@@ -16,5 +16,9 @@
   "license": "ISC",
   "devDependencies": {
     "electron": "^7.1.9"
+  },
+  "dependencies": {
+    "jzz": "^0.9.9",
+    "jzz-midi-gear": "^1.1.1"
   }
 }
