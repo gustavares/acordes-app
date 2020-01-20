@@ -21,6 +21,7 @@
     "electron-rebuild": "^1.8.8"
   },
   "dependencies": {
+    "@tonaljs/modules": "^3.4.2",
     "easymidi": "^1.0.3"
   }
 }
