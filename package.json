@@ -5,7 +5,9 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "rebuild": ".\\node_modules\\.bin\\electron-rebuild.cmd",
+    "postInstall": "rebuild"
   },
   "keywords": [
     "music",
@@ -15,7 +17,8 @@
   "author": "gustavares",
   "license": "ISC",
   "devDependencies": {
-    "electron": "^7.1.9"
+    "electron": "^7.1.9",
+    "electron-rebuild": "^1.8.8"
   },
   "dependencies": {
     "easymidi": "^1.0.3"
