@@ -1,4 +1,5 @@
-const listen = require('./midi');
+'use strict';
+const midi = require('./src/midi');
 const { app, BrowserWindow } = require('electron');
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -27,12 +28,22 @@ function createWindow () {
     // when you should delete the corresponding element.
     win = null
   });
+  return win;
 }
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-//app.on('ready', createWindow);
+app.on('ready', () => {
+  //const mainWindow = createWindow();
+  //mainWindow.loadURL(`file://${__dirname}/index.html`);
+  
+  const path = require('path');
+  
+  require('electron-reload')(__dirname, {
+    electron: path.join(__dirname, 'node_modules', '.bin', 'electron')
+  });
+});
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
@@ -47,11 +58,11 @@ app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (win === null) {
-    createWindow()
+    createWindow();
   }
 });
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
 
-listen();
+midi.init();
