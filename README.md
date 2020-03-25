@@ -1,12 +1,17 @@
 # acordes-app
-To Use
-To clone and run this repository you'll need Git and Node.js (which comes with npm) installed on your computer. From your command line:
+
+A learning app for musicians.
+Reads input from a MIDI keyboard to display what is being played, single notes, chords, scales on a sheet music, keyboard and guitar neck on screen.
 
 #### Main libs being used
 
-node-easymidi, wrapper for (node-midi), to get midi input https://github.com/dinchak/node-easymidi
-tonaljs to translate to music notation https://github.com/tonaljs/tonal
+##### node-easymidi 
+wrapper for (node-midi), to get midi input 
+https://github.com/dinchak/node-easymidi
 
+#### tonaljs 
+to translate to music notation 
+https://github.com/tonaljs/tonal
 
 #### Clone this repository
 git clone https://github.com/gustavares/acordes-app
