@@ -1,5 +1,6 @@
 'use strict';
 const midi = require('./src/midi');
+const socket = require('./src/socket');
 const { app, BrowserWindow } = require('electron');
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -35,9 +36,9 @@ function createWindow () {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', () => {
-  //const mainWindow = createWindow();
-  //mainWindow.loadURL(`file://${__dirname}/index.html`);
-  
+  const mainWindow = createWindow();
+  mainWindow.loadURL(`file://${__dirname}/index.html`);
+  mainWindow.webContents.openDevTools();
   const path = require('path');
   
   require('electron-reload')(__dirname, {

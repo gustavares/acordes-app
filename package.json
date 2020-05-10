@@ -26,6 +26,8 @@
   },
   "dependencies": {
     "@tonaljs/modules": "^3.4.2",
-    "easymidi": "^1.0.3"
+    "@tonaljs/tonal": "^3.6.0",
+    "easymidi": "^1.0.3",
+    "ws": "^7.2.5"
   }
 }
