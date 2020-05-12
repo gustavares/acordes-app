@@ -1,15 +1,30 @@
 export default class PianoKey extends HTMLLIElement {
-    constructor(note) {
+    constructor(note, keyColor) {
         super();
         this.note = note;
+        this.keyColor = keyColor;
+    }
+
+    getNote() {
+        return this.note;
+    }
+
+    press() {
+        if (this.keyColor == 'white') {
+            this.classList.add('white-active');
+        } else {
+            this.classList.add('black-active');
+        }
+    }
+
+    release() {
+        this.classList.remove('white-active');
+        //this.classList.remove('black-active');
     }
 
     connectedCallback() {
-        let keyColor = this.note.includes('S') ? 'black' : 'white';
-        let key = this.note.toLowerCase();
-        
-        this.classList.add(keyColor);
-        this.classList.add(key);
+        this.classList.add(this.keyColor);
+        this.classList.add(this.note);
     }
 }
 
