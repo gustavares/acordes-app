@@ -42,7 +42,7 @@ template.innerHTML = `
         background:linear-gradient(to bottom,#eee 0%,#fff 100%)
       }
       
-      ul .white:active {
+      ul .white-active {
         border-top:1px solid #777;
         border-left:1px solid #999;
         border-bottom:1px solid #999;
@@ -61,12 +61,12 @@ template.innerHTML = `
         background:linear-gradient(45deg,#222 0%,#555 100%)
       }
       
-      .black:active {
+      ul .black-active {
         box-shadow:-1px -1px 2px rgba(255,255,255,0.2) inset,0 -2px 2px 3px rgba(0,0,0,0.6) inset,0 1px 2px rgba(0,0,0,0.5);
         background:linear-gradient(to right,#444 0%,#222 100%)
       }
       
-      .a,.g,.f,.d,.c,.b,.e {
+      .A,.G,.F,.D,.C,.B,.E {
         margin:0 0 0 -1em
       }
       
@@ -100,23 +100,35 @@ export default class PianoWrapper extends HTMLElement {
     }
 
     playNotes(notes) {
-        console.log(notes);
+        notes.forEach(note => { 
+            note = note.slice(0, -1);
+            let key = this.keys.find(key => key.getNote() == note);
+
+            if (key != undefined) {
+                key.press();
+            }
+        })
     }
 
-    releaseNotes(notes) {
-        console.log(notes);
+    releaseNotes(note) {
+        note = note.slice(0, -1);
+        let key = this.keys.find(key => key.getNote() == note);
+
+        if (key != undefined) {
+            key.release();
+        }
     }
 
     connectedCallback() {
         for (let i = 0; i < this.notes.length; i++) {
             let whiteKey;
 
-            whiteKey = new PianoKey(this.notes[i]);
+            whiteKey = new PianoKey(this.notes[i], 'white');
             this.keys.push(whiteKey);
             this.$wrapper.appendChild(whiteKey);
 
             if (this.notes[i] != 'E' && this.notes[i] != 'B') {
-                let blackKey = new PianoKey(`${this.notes[i]}S`);
+                let blackKey = new PianoKey(`${this.notes[i]}#`, 'black');
                 this.keys.push(blackKey);
                 this.$wrapper.appendChild(blackKey);
             }
