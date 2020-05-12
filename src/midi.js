@@ -34,18 +34,31 @@ function _noteOn(midiNote) {
 
 function _noteOff(midiNote) {
     const releasedNote = Midi.midiToNoteName(midiNote);
-
+    
     const indexToRemove = pressedNotes.findIndex(noteInArray => noteInArray == releasedNote);
     if (indexToRemove != -1) pressedNotes.splice(indexToRemove, 1);
+    
+    return releasedNote;
 }
 
 function _sendNoteOnEvent(notes, chord) {
-    const message = {};
-
+    const message = {
+        action: 'pressed'
+    };
+    
     if (notes) message.notes = notes;
     if (chord) message.chord = chord;
 
     em.emit('noteOn', message);
+}
+
+function _sendNoteOffEvent(notes) {
+    const message = {
+        action: 'released'
+    };
+    if (notes) message.notes = notes;
+
+    em.emit('noteOff', message);
 }
 
 /**
@@ -64,17 +77,13 @@ function init() {
         input.on('noteon',  (msg) => {
             const note = _noteOn(msg.note);
             const chord = chords.getChord(pressedNotes);
-
-            if (chord != undefined) 
-                console.log('CHORD: ', chord);
             
-            // TODO: send pressed note and chord to front-end
             _sendNoteOnEvent(pressedNotes, chord);
         });
         input.on('noteoff', (msg) => { 
-            _noteOff(msg.note);
+            const note = _noteOff(msg.note);
 
-            // TODO: send removed note to front-end
+            _sendNoteOffEvent(note);
         });
     } else {
         return 'No MIDI Controllers found.'

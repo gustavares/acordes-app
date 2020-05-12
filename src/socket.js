@@ -13,5 +13,6 @@ wss.on('connection', function connection(ws) {
         console.log('received: %s', message);
     });
 
-    em.on('noteOn', (notes) => ws.send(JSON.stringify(notes)));
+    em.on('noteOn', (message) => ws.send(JSON.stringify(message)));
+    em.on('noteOff', (message) => ws.send(JSON.stringify(message)));
 });
