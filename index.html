@@ -5,6 +5,16 @@
     <title>Hello World!</title>
     <!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+    <style>
+      html, 
+      body {
+          height: 100%;
+      }
+      body {
+        background-color: #282a36;
+        min-height: 100%;
+      }
+    </style>
   </head>
   <body>
     <app-main></app-main>

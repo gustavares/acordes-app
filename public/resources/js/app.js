@@ -1,11 +1,27 @@
 import PianoWrapper from './pianoWrapper.js';
 
+const template = document.createElement('template');
+template.innerHTML = `
+    <style>
+        piano-wrapper {
+            position: absolute;
+            bottom: 0;
+        }
+
+        piano-wrapper.col {
+            display: grid;
+            grid-template-columns: 100%;
+        }
+    </style>
+`; 
 class AppMain extends HTMLElement {
     constructor() {
         super();
+        this.attachShadow({ mode: 'open' });
+        this.shadowRoot.appendChild(template.content.cloneNode(true));
+
         this.lastPlayedNotes = '';
         this.lastReleasedNote = '';
-        this.attachShadow({ mode: 'open'});
 
         this.socket = new WebSocket('ws://localhost:1040');
         this.socket.onopen = (event) => this.socket.send('Hello server!');
@@ -16,10 +32,6 @@ class AppMain extends HTMLElement {
         this.onrelease = new CustomEvent('onrelease');
 
         this.socket.onmessage = (event) => {
-            // TODO; check if it is a pressed or released event
-            /**
-             * event.data = { action: 'pressed', notes: [], chord: ''}
-             */
             const message = JSON.parse(event.data);
             this.lastAction = message.action;
             
@@ -27,7 +39,7 @@ class AppMain extends HTMLElement {
                 this.lastPlayedNotes = message.notes;
                 this.lastPlayedChord = message.chord;
 
-                this.dispatchEvent(this.onpress);
+                this.dispatchEvent(this.onpress);  
             } else {
                 this.lastReleasedNote = message.notes;
 
@@ -35,11 +47,11 @@ class AppMain extends HTMLElement {
             }
         };
 
-        const piano = new PianoWrapper(12, 'C2');
+        const piano = new PianoWrapper(49, 'C2');
         this.shadowRoot.appendChild(piano);
  
         this.addEventListener('onpress', (event) => piano.playNotes(this.lastPlayedNotes));
-        this.addEventListener('onrelease', (event) => piano.releaseNotes(this.lastReleasedNote));
+        this.addEventListener('onrelease', (event) => piano.releaseNote(this.lastReleasedNote));
     }
 }
 

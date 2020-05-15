@@ -11,15 +11,17 @@ template.innerHTML = `
         margin:0;
         background:#222
       }
-      
+
       ul {
-        height:18.875em;
-        width:34em;
-        margin:5em auto;
+        height:16.5em;
+        width:93em;
+        margin:0 5em;
         padding:3em 0 0 4.25em;
-        position:relative;
+        /*position:relative;*/
         border:1px solid #555;
         border-radius:1em;
+        background-color: #000000;
+        background-image: url("./public/resources/img/dark-wood.png");
         box-shadow:0 0 50px rgba(0,0,0,0.5) inset,0 1px rgba(212,152,125,0.2) inset,0 5px 15px rgba(0,0,0,0.5)
       }
       
@@ -32,8 +34,8 @@ template.innerHTML = `
       }
       
       ul .white {
-        height:16em;
-        width:4em;
+        height:10em;
+        width:2em;
         z-index:1;
         border-left:1px solid #bbb;
         border-bottom:1px solid #bbb;
@@ -51,9 +53,9 @@ template.innerHTML = `
       }
       
       .black {
-        height:8em;
-        width:2em;
-        margin:0 0 0 -1em;
+        height:6em;
+        width:1em;
+        margin:0 -0.5em 0 -0.5em;
         z-index:2;
         border:1px solid #000;
         border-radius:0 0 3px 3px;
@@ -86,13 +88,13 @@ export default class PianoWrapper extends HTMLElement {
         // piano template : https://codepen.io/zastrow/pen/oDBki
         super();
 
+        this.numOfOctaves = 6;
         this.numOfKeys = numOfKeys;
         this.startingNote = startingNote;
         this.keys = [];
         this.pressedNotes = [];
         this.notes = ["C", "D", "E", "F", "G", "A", "B"];
 
-        
         this.attachShadow({ mode: 'open' });
         this.shadowRoot.appendChild(template.content.cloneNode(true));
 
@@ -101,7 +103,7 @@ export default class PianoWrapper extends HTMLElement {
 
     playNotes(notes) {
         notes.forEach(note => { 
-            note = note.slice(0, -1);
+            //note = note.slice(0, -1);
             let key = this.keys.find(key => key.getNote() == note);
 
             if (key != undefined) {
@@ -110,8 +112,8 @@ export default class PianoWrapper extends HTMLElement {
         })
     }
 
-    releaseNotes(note) {
-        note = note.slice(0, -1);
+    releaseNote(note) {
+        //note = note.slice(0, -1);
         let key = this.keys.find(key => key.getNote() == note);
 
         if (key != undefined) {
@@ -120,19 +122,25 @@ export default class PianoWrapper extends HTMLElement {
     }
 
     connectedCallback() {
-        for (let i = 0; i < this.notes.length; i++) {
-            let whiteKey;
+      this.classList.add('col');
 
-            whiteKey = new PianoKey(this.notes[i], 'white');
-            this.keys.push(whiteKey);
-            this.$wrapper.appendChild(whiteKey);
 
-            if (this.notes[i] != 'E' && this.notes[i] != 'B') {
-                let blackKey = new PianoKey(`${this.notes[i]}#`, 'black');
-                this.keys.push(blackKey);
-                this.$wrapper.appendChild(blackKey);
-            }
+      // TODO: Refactor into separate functions
+      for (let i = 1; i <= this.numOfOctaves; i++) {
+        for (let j = 0; j < this.notes.length; j++) {
+          let whiteKey;
+
+          if (this.notes[j] != 'F' && this.notes[j] != 'C') {
+            let blackKey = new PianoKey(`${this.notes[j]}b${i}`, 'black');
+            this.keys.push(blackKey);
+            this.$wrapper.appendChild(blackKey);
+          }
+
+          whiteKey = new PianoKey(`${this.notes[j]}${i}`, 'white');
+          this.keys.push(whiteKey);
+          this.$wrapper.appendChild(whiteKey);
         }
+      }
     }
 
     getPressedNotes() {

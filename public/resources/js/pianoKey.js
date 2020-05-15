@@ -1,7 +1,8 @@
 export default class PianoKey extends HTMLLIElement {
-    constructor(note, keyColor) {
+    constructor(note, keyColor, alias) {
         super();
         this.note = note;
+        this.alias = alias;
         this.keyColor = keyColor;
     }
 
@@ -19,7 +20,7 @@ export default class PianoKey extends HTMLLIElement {
 
     release() {
         this.classList.remove('white-active');
-        //this.classList.remove('black-active');
+        this.classList.remove('black-active');
     }
 
     connectedCallback() {
